@@ -1,5 +1,5 @@
 (require 'package) ;; You might already have this line
-(require 'smartparens-config)
+;; (require 'smartparens-config)
 
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
@@ -7,6 +7,17 @@
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize) ;; You might already have this line
+
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(setq package-list '(cider smartparens rainbow-delimiters haskell-mode
+		     leuven-theme company ac-cider))			   
+
+(dolist (package package-list)
+  (unless (package-installed-p package)
+    (package-install package)))
+
 (load-theme 'leuven t)
 (global-company-mode)
 (custom-set-variables
