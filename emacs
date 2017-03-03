@@ -1,6 +1,8 @@
 (require 'package) ;; You might already have this line
 ;; (require 'smartparens-config)
 
+(set-default 'truncate-lines t)
+
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (when (< emacs-major-version 24)
