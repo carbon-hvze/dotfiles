@@ -14,12 +14,13 @@
   (package-refresh-contents))
 
 (setq package-list '(cider smartparens rainbow-delimiters haskell-mode
-		     leuven-theme company ac-cider))			   
+		     leuven-theme company ac-cider))
 
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
 
+;;(load-theme 'zenburn t)
 (load-theme 'leuven t)
 (global-company-mode)
 (custom-set-variables
@@ -27,9 +28,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (smartparens rainbow-delimiters haskell-mode zenburn-theme leuven-theme company ac-cider)))
+    (relative-line-numbers smartparens rainbow-delimiters haskell-mode zenburn-theme leuven-theme company ac-cider)))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -47,7 +49,18 @@
  '(rainbow-delimiters-depth-9-face ((t (:foreground "chocolate")))))
 
 (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+
+;; smartparens settings
 (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
+
+(define-key smartparens-mode-map (kbd "C-u") 'sp-unwrap-sexp)
+(define-key smartparens-mode-map (kbd "C-M-w") 'sp-copy-sexp)
+(define-key smartparens-mode-map (kbd "M-k") 'sp-kill-sexp)
+(define-key smartparens-mode-map (kbd "C-M-n") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-]") 'sp-select-next-thing-exchange)
+
+(fset 'my-wrap-with-paren "\C-](") ;; C-] is my binding for `sp-select-next-thing-exchange'
+(define-key smartparens-mode-map (kbd "C-9") 'my-wrap-with-paren)
 
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
@@ -57,3 +70,12 @@
 (require 'haskell-process)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 
+; ensure that last file is opened on startup
+(desktop-save-mode 1)
+
+;; linum settings
+(eval-after-load "linum"
+  '(set-face-attribute 'linum nil :height 110))
+(global-linum-mode 1)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
