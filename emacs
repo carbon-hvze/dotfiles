@@ -13,26 +13,56 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-(setq package-list '(cider smartparens rainbow-delimiters haskell-mode
-		     leuven-theme company ac-cider))
+(setq package-list '(cider smartparens haskell-mode
+		     leuven-theme company ac-cider
+			   zenburn-theme))
 
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
 
-;;(load-theme 'zenburn t)
-(load-theme 'leuven t)
 (global-company-mode)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
+ '(custom-safe-themes
+   (quote
+    ("23ccf46b0d05ae80ee0661b91a083427a6c61e7a260227d37e36833d862ccffc" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "4156d0da4d9b715c6f7244be34f2622716fb563d185b6facedca2c0985751334" "9d91458c4ad7c74cf946bd97ad085c0f6a40c370ac0a1cbeb2e3879f15b40553" default)))
+ '(fci-rule-color "#F0F0F0")
+ '(hl-sexp-background-color "#efebe9")
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (relative-line-numbers smartparens rainbow-delimiters haskell-mode zenburn-theme leuven-theme company ac-cider)))
- '(tool-bar-mode nil))
+    (tao-theme solarized-theme relative-line-numbers smartparens haskell-mode zenburn-theme leuven-theme company ac-cider)))
+ '(tool-bar-mode nil)
+ '(vc-annotate-background "#D9D9D9")
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#616161")
+     (40 . "#3C3C3C")
+     (60 . "#3C3C3C")
+     (80 . "#252525")
+     (100 . "#252525")
+     (120 . "#161616")
+     (140 . "#161616")
+     (160 . "#0E0E0E")
+     (180 . "#0E0E0E")
+     (200 . "#0E0E0E")
+     (220 . "#080808")
+     (240 . "#080808")
+     (260 . "#080808")
+     (280 . "#080808")
+     (300 . "#080808")
+     (320 . "#080808")
+     (340 . "#080808")
+     (360 . "#080808"))))
+ '(vc-annotate-very-old-color "#161616"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -48,7 +78,7 @@
  '(rainbow-delimiters-depth-8-face ((t (:foreground "dark blue"))))
  '(rainbow-delimiters-depth-9-face ((t (:foreground "chocolate")))))
 
-(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+;;(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
 
 ;; smartparens settings
 (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
@@ -79,3 +109,5 @@
 (global-linum-mode 1)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(set-cursor-color "#ccc")
