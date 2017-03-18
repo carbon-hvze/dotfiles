@@ -13,9 +13,10 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-(setq package-list '(cider smartparens haskell-mode
-		     leuven-theme company ac-cider
-			   zenburn-theme))
+(setq package-list '(cider smartparens haskell-mode company ac-cider
+		     tao-theme aggressive-indent))
+
+(load-theme 'tao-yang t)
 
 (dolist (package package-list)
   (unless (package-installed-p package)
@@ -35,11 +36,10 @@
    (quote
     ("23ccf46b0d05ae80ee0661b91a083427a6c61e7a260227d37e36833d862ccffc" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "4156d0da4d9b715c6f7244be34f2622716fb563d185b6facedca2c0985751334" "9d91458c4ad7c74cf946bd97ad085c0f6a40c370ac0a1cbeb2e3879f15b40553" default)))
  '(fci-rule-color "#F0F0F0")
- '(hl-sexp-background-color "#efebe9")
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (tao-theme solarized-theme relative-line-numbers smartparens haskell-mode zenburn-theme leuven-theme company ac-cider)))
+    (aggressive-indent tao-theme solarized-theme relative-line-numbers smartparens haskell-mode zenburn-theme leuven-theme company ac-cider)))
  '(tool-bar-mode nil)
  '(vc-annotate-background "#D9D9D9")
  '(vc-annotate-color-map
@@ -78,8 +78,6 @@
  '(rainbow-delimiters-depth-8-face ((t (:foreground "dark blue"))))
  '(rainbow-delimiters-depth-9-face ((t (:foreground "chocolate")))))
 
-;;(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-
 ;; smartparens settings
 (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
 
@@ -111,3 +109,7 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (set-cursor-color "#ccc")
+
+;;aggressive indentation
+(add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+(add-hook 'css-mode-hook #'aggressive-indent-mode)
