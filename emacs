@@ -1,10 +1,10 @@
 (require 'package) ;; You might already have this line
-;; (require 'smartparens-config)
 
-(set-default 'truncate-lines t)
-
+;; temp solution for color theme
+(add-to-list 'load-path "~/.emacs.d/themes/")
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
+
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
@@ -13,13 +13,14 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-(setq package-list '(cider smartparens haskell-mode company ac-cider
-			   aggressive-indent eshell-prompt-extras
-			   minimal-theme))
+(setq package-list '(ac-cider aggressive-indent auto-complete company eshell-prompt-extras flycheck-clojure
+			      cider clojure-mode flycheck-pos-tip flycheck haskell-mode json-mode
+			      json-reformat json-snatcher minimal-theme org pkg-info epl popup
+			      pos-tip queue relative-line-numbers shell-switcher smartparens
+			      dash spinner writeroom-mode visual-fill-column))
 
-;;(load-theme 'tao-yang t)
-;;(load-theme 'soft-morning t)
-(load-theme 'minimal-light t)
+;; todo upload to melpa
+(load-theme 'custom-minimal-light t)
 
 (dolist (package package-list)
   (unless (package-installed-p package)
@@ -35,14 +36,11 @@
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
- '(custom-safe-themes
-   (quote
-    ("23ccf46b0d05ae80ee0661b91a083427a6c61e7a260227d37e36833d862ccffc" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "4156d0da4d9b715c6f7244be34f2622716fb563d185b6facedca2c0985751334" "9d91458c4ad7c74cf946bd97ad085c0f6a40c370ac0a1cbeb2e3879f15b40553" default)))
  '(fci-rule-color "#F0F0F0" t)
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (minimal-themee eshell-prompt-extras minimal-theme soft-morning-theme org aggressive-indent tao-theme solarized-theme relative-line-numbers smartparens haskell-mode zenburn-theme leuven-theme company ac-cider)))
+    (shell-switcher writeroom-mode minimal-theme eshell-prompt-extras minimal-theme soft-morning-theme org aggressive-indent tao-theme solarized-theme relative-line-numbers smartparens haskell-mode zenburn-theme leuven-theme company ac-cider)))
  '(tool-bar-mode nil)
  '(vc-annotate-background "#D9D9D9")
  '(vc-annotate-color-map
@@ -71,8 +69,10 @@
 (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
 
 (define-key smartparens-mode-map (kbd "C-u") 'sp-unwrap-sexp)
+(define-key smartparens-mode-map (kbd "C-M-u") 'sp-backward-unwrap-sexp)
 (define-key smartparens-mode-map (kbd "C-M-w") 'sp-copy-sexp)
 (define-key smartparens-mode-map (kbd "M-k") 'sp-kill-sexp)
+(define-key smartparens-mode-map (kbd "C-M-k") 'sp-backward-kill-sexp)
 (define-key smartparens-mode-map (kbd "C-M-n") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "C-]") 'sp-select-next-thing-exchange)
 
@@ -98,7 +98,8 @@
 ;; linum settings
 (eval-after-load "linum"
   '(set-face-attribute 'linum nil :height 110))
-(global-linum-mode 1)
+
+(global-linum-mode 0)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -139,3 +140,21 @@
   (autoload 'epe-theme-lambda "eshell-prompt-extras")
   (setq eshell-highlight-prompt nil
         eshell-prompt-function 'epe-theme-lambda))
+
+(set-default 'truncate-lines nil)
+
+(with-eval-after-load 'writeroom-mode
+  (define-key writeroom-mode-map (kbd "C-M-d") #'writeroom-decrease-width)
+  (define-key writeroom-mode-map (kbd "C-M-i") #'writeroom-increase-width)
+  (define-key writeroom-mode-map (kbd "C-M-a") #'writeroom-adjust-width))
+
+(set-face-attribute 'default nil :height 108)
+
+(shell-switcher-mode)
+
+(define-key shell-switcher-mode-map (kbd "C-'")
+  'shell-switcher-switch-buffer)
+(define-key shell-switcher-mode-map (kbd "C-x 4 '")
+  'shell-switcher-switch-buffer-other-window)
+(define-key shell-switcher-mode-map (kbd "C-M-'")
+  'shell-switcher-new-shell)
