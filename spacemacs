@@ -30,24 +30,24 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
-     sql
-     javascript
-     html
-     csv
-     yaml
-     clojure
+   '(yaml
+     ;; ----------------------------------------------------------------
+     ;; Example of useful layers you may want to use right away.
+     ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
+     ;; <M-m f e R> (Emacs style) to install them.
+     ;; ----------------------------------------------------------------
      helm
      ;; auto-completion
-     better-defaults
+     ;; better-defaults
      emacs-lisp
      git
      markdown
      org
-     (shell :variables
-             shell-default-height 30
-             shell-default-position 'bottom
-             shell-default-shell 'eshell)
+     themes-megapack
+     clojure
+     ;; (shell :variables
+     ;;        shell-default-height 30
+     ;;        shell-default-position 'bottom)
      ;; spell-checking
      ;; syntax-checking
      ;; version-control
@@ -85,7 +85,7 @@ values."
    ;; This variable has no effect if Emacs is launched with the parameter
    ;; `--insecure' which forces the value of this variable to nil.
    ;; (default t)
-   dotspacemacs-elpa-https nil 
+   dotspacemacs-elpa-https t
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    dotspacemacs-elpa-timeout 5
    ;; If non nil then spacemacs will check for updates at startup
@@ -128,7 +128,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(minimal-light)
+   dotspacemacs-themes '(basic)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -301,8 +301,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  (push '("melpa-stable" . "stable.melpa.org/packages/") configuration-layer--elpa-archives)
-  (push '(helm . "melpa-stable") package-pinned-packages))
+  )
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -311,58 +310,29 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (define-key evil-insert-state-map (kbd "C-n") 'evil-normal-state)
-  ;; normal state bindings
-  (define-key evil-normal-state-map (kbd "n") 'evil-next-line)
-  (define-key evil-normal-state-map (kbd "p") 'evil-previous-line)
-  (define-key evil-normal-state-map (kbd "r") 'evil-forward-char)
-  (define-key evil-normal-state-map (kbd "l") 'evil-backward-char)
-  (define-key evil-normal-state-map (kbd "f") 'evil-forward-word-begin)
-  (define-key evil-normal-state-map (kbd "e") 'evil-end-of-line)
-  (define-key evil-normal-state-map (kbd "I") 'evil-append)
-  (define-key evil-normal-state-map (kbd "a") 'evil-beginning-of-line)
-  (define-key evil-normal-state-map (kbd "N") 'evil-search-next)
-  (define-key evil-normal-state-map (kbd "y") 'evil-paste-before)
-  ;; motion state bindings
-  (define-key evil-insert-state-map (kbd "C-n") 'evil-normal-state)
-  (define-key evil-motion-state-map (kbd "n") 'evil-next-line)
-  (define-key evil-motion-state-map (kbd "p") 'evil-previous-line)
-  (define-key evil-motion-state-map (kbd "r") 'evil-forward-char)
-  (define-key evil-motion-state-map (kbd "n") 'evil-next-line)
-  (define-key evil-motion-state-map (kbd "p") 'evil-previous-line)
-  (define-key evil-motion-state-map (kbd "r") 'evil-forward-char)
-  (define-key evil-motion-state-map (kbd "l") 'evil-backward-char)
-  (define-key evil-motion-state-map (kbd "f") 'evil-forward-word-begin)
-  (define-key evil-motion-state-map (kbd "e") 'evil-end-of-line)
-  (define-key evil-motion-state-map (kbd "I") 'evil-append)
-  (define-key evil-motion-state-map (kbd "a") 'evil-beginning-of-line)
-  (define-key evil-motion-state-map (kbd "N") 'evil-search-next)
-  ;; visual state bindings
-  (define-key evil-insert-state-map (kbd "C-n") 'evil-normal-state)
-  (define-key evil-visual-state-map (kbd "n") 'evil-next-line)
-  (define-key evil-visual-state-map (kbd "p") 'evil-previous-line)
-  (define-key evil-visual-state-map (kbd "r") 'evil-forward-char)
-  (define-key evil-visual-state-map (kbd "n") 'evil-next-line)
-  (define-key evil-visual-state-map (kbd "p") 'evil-previous-line)
-  (define-key evil-visual-state-map (kbd "r") 'evil-forward-char)
-  (define-key evil-visual-state-map (kbd "l") 'evil-backward-char)
-  (define-key evil-visual-state-map (kbd "f") 'evil-forward-word-begin)
-  (define-key evil-visual-state-map (kbd "e") 'evil-end-of-line)
-  (define-key evil-visual-state-map (kbd "I") 'evil-append)
-  (define-key evil-visual-state-map (kbd "a") 'evil-beginning-of-line)
-  (define-key evil-visual-state-map (kbd "N") 'evil-search-next)
-
-  (define-key evil-lisp-state-map (kbd "C-n") 'evil-normal-state)
-  (define-key evil-lisp-state-map (kbd "f") 'evil-lisp-state-next-closing-paren)
-  (define-key evil-lisp-state-map (kbd "b") 'evil-lisp-state-prev-opening-paren)
-  (define-key evil-lisp-state-map (kbd "a") 'evil-lisp-state-beginning-of-sexp)
-  (define-key evil-lisp-state-map (kbd "e") 'evil-lisp-state-sp-end-of-sexp)
-
-  (add-hook 'text-mode-hook 'spacemacs/toggle-truncate-lines-off)
   )
 
-;; Do not write anything past this comment. This is where Emacs w(setq-default evil-escape-key-sequence "C-n"rill
+;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -371,11 +341,27 @@ you should place your code here."
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (org-category-capture zonokai-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme sql-indent seq web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc coffee-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode csv-mode yaml-mode zenburn-theme clj-refactor inflections edn multiple-cursors paredit yasnippet peg cider-eval-sexp-fu cider queue clojure-mode xterm-color unfill smeargle shell-pop orgit org-projectile org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
- '(paradox-github-token t))
+    (yaml-mode flycheck company ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+ '(vc-annotate-background "#ffffff")
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#ab4642")
+     (50 . "#dc9656")
+     (80 . "#f7ca88")
+     (110 . "#a1b56c")
+     (140 . "#86c1b9")
+     (170 . "#7cafc2")
+     (200 . "#ba8baf")
+     (230 . "#a16046")
+     (260 . "#181818")
+     (290 . "#282828")
+     (320 . "#383838")
+     (350 . "#585858"))))
+ '(vc-annotate-very-old-color "#585858"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+)
